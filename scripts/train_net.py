@@ -154,7 +154,7 @@ for epoch in range(10):  # loop over the dataset multiple times
 
         # forward + backward + optimize
         outputs = net(inputs)
-        loss = criterion(outputs, labels)
+        loss = criterion(outputs, labels.long())
         loss.backward()
         optimizer.step()
 
