@@ -16,9 +16,11 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.abspath(os.path.join(script_path, "../PenguinPi-robot/software/python/client/")))
 from pibot_client import PiBot
 
+from transforms import MyTransforms
+from model import Net
 
 parser = argparse.ArgumentParser(description='PiBot client')
-parser.add_argument('--ip', type=str, default='localhost', help='IP address of PiBot')
+parser.add_argument('--ip', type=str, default='192.168.1.50', help='IP address of PiBot')
 args = parser.parse_args()
 
 bot = PiBot(ip=args.ip)
@@ -27,8 +29,12 @@ bot = PiBot(ip=args.ip)
 bot.setVelocity(0, 0)
 
 #INITIALISE NETWORK HERE
+net = Net()
+tf = MyTransforms()
+from pred2steer import pred2steer
 
 #LOAD NETWORK WEIGHTS HERE
+net.load_state_dict(torch.load('steer_net.pth', weights_only=True))
 
 #countdown before beginning
 print("Get ready...")
@@ -48,14 +54,16 @@ try:
         im = bot.getImage()
 
         #TO DO: apply any necessary image transforms
+        im = tf(im)
 
         #TO DO: pass image through network get a prediction
+        prediction = net(im)
 
         #TO DO: convert prediction into a meaningful steering angle
+        angle = pred2steer(prediction)
 
         #TO DO: check for stop signs?
         
-        angle = 0
 
         Kd = 20 #base wheel speeds, increase to go faster, decrease to go slower
         Ka = 20 #how fast to turn when given an angle

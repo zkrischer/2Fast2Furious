@@ -13,6 +13,7 @@ import sklearn.metrics as metrics
 import matplotlib.pyplot as plt
 
 from steerDS import SteerDataSet
+from model import Net
 
 #######################################################################################################################################
 ####     This tutorial is adapted from the PyTorch "Train a Classifier" tutorial                                                   ####
@@ -33,11 +34,6 @@ def imshow(img):
 ####     SETTING UP THE DATASET                                                                                                    ####
 #######################################################################################################################################
 
-#transformations for raw images before going to CNN
-transform = transforms.Compose([transforms.ToTensor(),
-                                transforms.Resize((40, 60)),
-                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                                ])
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -45,7 +41,7 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 ## Train dataset ##
 ###################
 
-train_ds = SteerDataSet(os.path.join(script_path, '..', 'data', 'train_starter'), '.jpg', transform)
+train_ds = SteerDataSet(os.path.join(script_path, '..', 'data', 'train_starter'), '.jpg')
 print("The train dataset contains %d images " % len(train_ds))
 
 #data loader nicely batches images for the training process and shuffles (if desired)
@@ -76,7 +72,7 @@ imshow(torchvision.utils.make_grid(example_ims))
 ## Validation dataset ##
 ########################
 
-val_ds = SteerDataSet(os.path.join(script_path, '..', 'data', 'val_starter'), '.jpg', transform)
+val_ds = SteerDataSet(os.path.join(script_path, '..', 'data', 'val_starter'), '.jpg')
 print("The train dataset contains %d images " % len(val_ds))
 
 #data loader nicely batches images for the training process and shuffles (if desired)
@@ -100,35 +96,6 @@ plt.show()
 #######################################################################################################################################
 ####     INITIALISE OUR NETWORK                                                                                                    ####
 #######################################################################################################################################
-
-class Net(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(3, 6, 5)
-        self.conv2 = nn.Conv2d(6, 16, 5)
-
-        self.pool = nn.MaxPool2d(2, 2)
-
-        self.fc1 = nn.Linear(1344, 256)
-        self.fc2 = nn.Linear(256, 5)
-
-        self.relu = nn.ReLU()
-
-
-    def forward(self, x):
-        #extract features with convolutional layers
-        x = self.pool(self.relu(self.conv1(x)))
-        x = self.pool(self.relu(self.conv2(x)))
-        x = torch.flatten(x, 1) # flatten all dimensions except batch
-        
-        #linear layer for classification
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-       
-        return x
-    
-
 net = Net()
 
 #######################################################################################################################################

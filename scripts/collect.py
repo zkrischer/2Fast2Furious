@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(script_path, "../PenguinPi-robot/so
 from pibot_client import PiBot
 
 parser = argparse.ArgumentParser(description='PiBot client')
-parser.add_argument('--ip', type=str, default='localhost', help='IP address of PiBot')
+parser.add_argument('--ip', type=str, default='192.168.1.50', help='IP address of PiBot')
 parser.add_argument('--im_num', type = int, default = 0)
 parser.add_argument('--folder', type = str, default = 'train')
 args = parser.parse_args()
