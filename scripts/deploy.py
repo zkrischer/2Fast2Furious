@@ -52,11 +52,10 @@ try:
     while True:
         # get an image from the the robot
         im = bot.getImage()
-
         #TO DO: apply any necessary image transforms
         im = tf(im)
-
         #TO DO: pass image through network get a prediction
+        im = im.unsqueeze(0)
         prediction = net(im)
 
         #TO DO: convert prediction into a meaningful steering angle

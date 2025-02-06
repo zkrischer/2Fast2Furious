@@ -25,9 +25,9 @@ class MyTransforms(nn.Module):
 
     def forward(self, x, angle=None):
         x = self.transform(x)
-        if torch.rand(1).item() < 0.5 and angle is not None:
-            # 50% change of horizontal flip
-            # only when angle is passed so not during deployment
-            x = self.mirror(x)
-            angle = -angle
+        # if torch.rand(1).item() < 0.5 and angle is not None:
+        #     # 50% change of horizontal flip
+        #     # only when angle is passed so not during deployment
+        #     x = self.mirror(x)
+        #     angle = -angle
         return (x, angle) if angle is not None else x
