@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 
 from steerDS import SteerDataSet
 from model import Net
+from loss import EMDLoss
 
 #######################################################################################################################################
 ####     This tutorial is adapted from the PyTorch "Train a Classifier" tutorial                                                   ####
@@ -50,7 +51,7 @@ train_ds = SteerDataSet(folder_list, '.jpg')
 print("The train dataset contains %d images " % len(train_ds))
 
 #data loader nicely batches images for the training process and shuffles (if desired)
-trainloader = DataLoader(train_ds,batch_size=8,shuffle=True)
+trainloader = DataLoader(train_ds,batch_size=8,shuffle=True, drop_last=True)
 all_y = []
 for S in trainloader:
     im, y = S    
@@ -113,7 +114,8 @@ net = Net()
 #######################################################################################################################################
 
 #for classification tasks
-criterion = nn.CrossEntropyLoss()
+criterion1 = nn.CrossEntropyLoss()
+criterion2 = EMDLoss()
 #You could use also ADAM
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
@@ -138,7 +140,13 @@ for epoch in range(10):  # loop over the dataset multiple times
 
         # forward + backward + optimize
         outputs = net(inputs)
-        loss = criterion(outputs, labels.long())
+        probability = nn.functional.softmax(outputs, dim=1)
+        loss1 = criterion1(outputs, labels.long())
+        loss2 = criterion2(probability, labels.long())
+        # print(f'{loss1=}')
+        # print(f'{loss2=}')
+        # print()
+        loss = loss1 + 0.2 * loss2
         loss.backward()
         optimizer.step()
 
@@ -164,7 +172,12 @@ for epoch in range(10):  # loop over the dataset multiple times
             images, labels = data
             outputs = net(images)
             _, predictions = torch.max(outputs, 1)
-            loss = criterion(outputs, labels)
+            loss1 = criterion1(outputs, labels.long())
+            loss2 = criterion2(probability, labels.long())
+            # print(f'{loss1=}')
+            # print(f'{loss2=}')
+            # print()
+            loss = loss1 + 1.5 * loss2
 
             val_loss += loss.item()
             # collect the correct predictions for each class

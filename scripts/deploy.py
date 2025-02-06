@@ -56,7 +56,9 @@ try:
         im = tf(im)
         #TO DO: pass image through network get a prediction
         im = im.unsqueeze(0)
-        prediction = net(im)
+
+        with torch.inference_mode():
+            prediction = net(im)
 
         #TO DO: convert prediction into a meaningful steering angle
         angle = pred2steer(prediction)

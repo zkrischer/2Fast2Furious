@@ -1,6 +1,5 @@
 import numpy as np
 from glob import glob
-from torchvision import transforms
 from torch.utils.data import Dataset
 import cv2
 from os import path
