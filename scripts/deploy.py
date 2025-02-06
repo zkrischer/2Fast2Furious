@@ -59,9 +59,10 @@ try:
 
         with torch.inference_mode():
             prediction = net(im)
-
+            print(prediction)
         #TO DO: convert prediction into a meaningful steering angle
         angle = pred2steer(prediction)
+        print(angle)
 
         #TO DO: check for stop signs?
         

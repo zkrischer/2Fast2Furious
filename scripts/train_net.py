@@ -43,10 +43,10 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 ###################
 folder_list = [os.path.join(script_path, '..', 'data', '2fast2furious'),
                os.path.join(script_path, '..', 'data', 'train_starter'),
-               os.path.join(script_path, '..', 'data', 'skipper'),
-               os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021550_left'),
-               os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021555_left'),
-               os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021558_right')]
+               os.path.join(script_path, '..', 'data', 'skipper')]
+               #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021550_left'),
+               #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021555_left'),
+               #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021558_right')]
 train_ds = SteerDataSet(folder_list, '.jpg')
 print("The train dataset contains %d images " % len(train_ds))
 
@@ -77,9 +77,9 @@ imshow(torchvision.utils.make_grid(example_ims))
 ########################
 ## Validation dataset ##
 ########################
-val_folder_list = [os.path.join(script_path, '..', 'data', 'slamtroopers' ,'0502160_right'),
-                   os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021604_left'),
-                   os.path.join(script_path, '..', 'data', 'slamtroopers' ,'04021605_left'),
+val_folder_list = [#os.path.join(script_path, '..', 'data', 'slamtroopers' ,'0502160_right'),
+                   #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021604_left'),
+                   #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'04021605_left'),
                    os.path.join(script_path, '..', 'data', 'val_starter')]
 val_ds = SteerDataSet(val_folder_list, '.jpg')
 print("The train dataset contains %d images " % len(val_ds))
