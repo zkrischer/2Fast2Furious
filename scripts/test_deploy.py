@@ -15,11 +15,13 @@ import torchvision.transforms as transforms
 script_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.abspath(os.path.join(script_path, "../PenguinPi-robot/software/python/client/")))
 from pibot_client import PiBot
+
+from transforms import MyTransforms
+from model import Net
 from findStopSign import findStopSign
 
-
 parser = argparse.ArgumentParser(description='PiBot client')
-parser.add_argument('--ip', type=str, default='localhost', help='IP address of PiBot')
+parser.add_argument('--ip', type=str, default='192.168.1.50', help='IP address of PiBot')
 args = parser.parse_args()
 
 bot = PiBot(ip=args.ip)
@@ -28,8 +30,12 @@ bot = PiBot(ip=args.ip)
 bot.setVelocity(0, 0)
 
 #INITIALISE NETWORK HERE
+net = Net()
+tf = MyTransforms()
+from pred2steer import pred2steer
 
 #LOAD NETWORK WEIGHTS HERE
+net.load_state_dict(torch.load('steer_net.pth', weights_only=True))
 
 #countdown before beginning
 print("Get ready...")
@@ -44,19 +50,40 @@ print("GO!")
 
 try:
     angle = 0
+    stopped = False
+    stopped_count = 0
+    max_count = 50
     while True:
         # get an image from the the robot
         im = bot.getImage()
-
         #TO DO: apply any necessary image transforms
-
+        trans_image = tf(im)
         #TO DO: pass image through network get a prediction
+        trans_image = trans_image.unsqueeze(0)
 
+        with torch.inference_mode():
+            prediction = net(trans_image)
+            print(prediction)
         #TO DO: convert prediction into a meaningful steering angle
+        angle = pred2steer(prediction)
+        print(angle)
 
         #TO DO: check for stop signs?
+        stop_found = findStopSign(im)
         
-        angle = 0
+        if not stopped and stop_found:
+            bot.set_velocity(0.0,0.0)
+            stopped = True
+            # Need to add the capability to wait
+            time.sleep(10)
+        elif not stop_found:
+            pass
+        else:
+            stopped_count+=1
+            if stopped_count == max_count:
+                stopped_count = 0
+                stopped = False
+        
 
         Kd = 20 #base wheel speeds, increase to go faster, decrease to go slower
         Ka = 20 #how fast to turn when given an angle
