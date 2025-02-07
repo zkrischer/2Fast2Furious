@@ -3,7 +3,7 @@ import numpy as np
 
 def countObjects(contours, image, draw=False):
     largest_box = None
-    largest_area = 50  # Minimum area threshold
+    largest_area = 65  # Minimum area threshold
 
     # Iterate through contours to find the one with the largest area
     for contour in contours:
@@ -25,6 +25,8 @@ def countObjects(contours, image, draw=False):
 
 def findStopSign(img):
     hsv_lower = np.array([138, 125, 0])
+    hsv_lower = np.array([133, 120, 0])
+
     hsv_upper = np.array([179,255,255])
 
     

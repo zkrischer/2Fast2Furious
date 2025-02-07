@@ -21,7 +21,7 @@ from model import Net
 from findStopSign import findStopSign
 
 parser = argparse.ArgumentParser(description='PiBot client')
-parser.add_argument('--ip', type=str, default='192.168.1.50', help='IP address of PiBot')
+parser.add_argument('--ip', type=str, default='192.168.1.252', help='IP address of PiBot')
 args = parser.parse_args()
 
 bot = PiBot(ip=args.ip)
@@ -52,7 +52,7 @@ try:
     angle = 0
     stopped = False
     stopped_count = 0
-    max_count = 50
+    max_count = 40
     while True:
         # get an image from the the robot
         im = bot.getImage()
@@ -72,10 +72,10 @@ try:
         stop_found = findStopSign(im)
         
         if not stopped and stop_found:
-            bot.set_velocity(0.0,0.0)
+            bot.setVelocity(0,0)
             stopped = True
             # Need to add the capability to wait
-            time.sleep(10)
+            time.sleep(3)
         elif not stop_found:
             pass
         else:
