@@ -28,7 +28,8 @@ def findStopSign(img):
     hsv_upper = np.array([179,255,255])
 
     
-    image = cv2.imread(img)[115:,:]
+    # image = cv2.imread(img)[115:,:]
+    image = img[115:]
     
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, hsv_lower, hsv_upper)

@@ -12,9 +12,9 @@ sys.path.append(os.path.abspath(os.path.join(script_path, "../PenguinPi-robot/so
 from pibot_client import PiBot
 
 parser = argparse.ArgumentParser(description='PiBot client')
-parser.add_argument('--ip', type=str, default='192.168.1.50', help='IP address of PiBot')
+parser.add_argument('--ip', type=str, default='192.168.1.252', help='IP address of PiBot')
 parser.add_argument('--im_num', type = int, default = 0)
-parser.add_argument('--folder', type = str, default = 'train')
+parser.add_argument('--folder', type = str, default = 'train2_CCW')
 args = parser.parse_args()
 
 if not os.path.exists(script_path+"/../data/"+args.folder):
@@ -54,10 +54,16 @@ def on_press(key):
             angle = 0
         elif key == keyboard.Key.right:
             print("right")
-            angle += 0.1
+            if angle <= 0:
+                angle = 0.3
+            else:
+                angle = 0.5
         elif key == keyboard.Key.left:
             print("left")
-            angle -= 0.1
+            if angle >= 0:
+                angle = -0.3
+            else:
+                angle = -0.5
         elif key == keyboard.Key.space:
             print("stop")
             bot.setVelocity(0, 0)
@@ -72,21 +78,24 @@ def on_press(key):
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
 
+i = 0
 try:
     while continue_running:
-        # Get an image from the robot
-        img = bot.getImage()
         
         angle = np.clip(angle, -0.5, 0.5)
-        Kd = 15  # Base wheel speeds
-        Ka = 15  # Turn speed
+        Kd = 20  # Base wheel speeds
+        Ka = 20  # Turn speed
         left  = int(Kd + Ka*angle)
         right = int(Kd - Ka*angle)
         
         bot.setVelocity(left, right)
 
-        cv2.imwrite(script_path+"/../data/"+args.folder+"/"+str(im_number).zfill(6)+'%.2f'%angle+".jpg", img) 
-        im_number += 1
+        if i % 2 == 0:
+
+            # Get an image from the robot
+            img = bot.getImage()
+            cv2.imwrite(script_path+"/../data/"+args.folder+"/"+str(im_number).zfill(6)+'%.2f'%angle+".jpg", img) 
+            im_number += 1
 
         time.sleep(0.1)  # Small delay to reduce CPU usage
 

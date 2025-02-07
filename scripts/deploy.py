@@ -20,7 +20,7 @@ from transforms import MyTransforms
 from model import Net
 
 parser = argparse.ArgumentParser(description='PiBot client')
-parser.add_argument('--ip', type=str, default='192.168.1.50', help='IP address of PiBot')
+parser.add_argument('--ip', type=str, default='192.168.1.252', help='IP address of PiBot')
 args = parser.parse_args()
 
 bot = PiBot(ip=args.ip)
@@ -52,6 +52,8 @@ try:
     while True:
         # get an image from the the robot
         im = bot.getImage()
+        if im is None:
+            continue
         #TO DO: apply any necessary image transforms
         im = tf(im)
         #TO DO: pass image through network get a prediction
@@ -59,10 +61,9 @@ try:
 
         with torch.inference_mode():
             prediction = net(im)
-            print(prediction)
         #TO DO: convert prediction into a meaningful steering angle
         angle = pred2steer(prediction)
-        print(angle)
+        print(f'{angle = }')
 
         #TO DO: check for stop signs?
         

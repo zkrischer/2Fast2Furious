@@ -44,6 +44,9 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 folder_list = [
     # os.path.join(script_path, '..', 'data', 'train_starter'),
     os.path.join(script_path, '..', 'data', 'train_CW'),
+    os.path.join(script_path, '..', 'data', 'train_CCW'),
+    os.path.join(script_path, '..', 'data', 'train2_CW'),
+    os.path.join(script_path, '..', 'data', 'train2_CCW')
 ]
 # folder_list = [os.path.join(script_path, '..', 'data', 'train_tight_turns_CW'),
 #                os.path.join(script_path, '..', 'data', 'train_tight_turns_CCW')]
@@ -79,13 +82,20 @@ print(' '.join(f'{example_lbls[j]}' for j in range(len(example_lbls))))
 imshow(torchvision.utils.make_grid(example_ims))
 
 
+criterion1 = nn.CrossEntropyLoss(weight=1/torch.tensor(all_counts))
+
+
 ########################
 ## Validation dataset ##
 ########################
-val_folder_list = [#os.path.join(script_path, '..', 'data', 'slamtroopers' ,'0502160_right'),
+val_folder_list = [
+    os.path.join(script_path, '..', 'data', 'val_CW'),
+    os.path.join(script_path, '..', 'data', 'val_CCW'),
+]
+# val_folder_list = [#os.path.join(script_path, '..', 'data', 'slamtroopers' ,'0502160_right'),
                    #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021604_left'),
                    #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'04021605_left'),
-                   os.path.join(script_path, '..', 'data', 'val_starter')]
+                #    os.path.join(script_path, '..', 'data', 'val_starter')]
 val_ds = SteerDataSet(val_folder_list, '.jpg')
 print("The train dataset contains %d images " % len(val_ds))
 
@@ -119,10 +129,10 @@ net = Net()
 #######################################################################################################################################
 
 #for classification tasks
-criterion1 = nn.CrossEntropyLoss()
+
 criterion2 = EMDLoss()
 #You could use also ADAM
-optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+optimizer = optim.AdamW(net.parameters(), lr=0.001)
 
 
 #######################################################################################################################################
