@@ -40,13 +40,13 @@ class SteerDataSet(Dataset):
 
         img, steering = self.transform(img, steering)     
 
-        if steering <= -0.5:
+        if steering <= -0.4:
             steering_cls = 0
         elif steering < 0:
             steering_cls = 1
         elif steering == 0:
             steering_cls = 2
-        elif steering < 0.5:
+        elif steering < 0.4:
             steering_cls = 3
         else:
             steering_cls = 4 

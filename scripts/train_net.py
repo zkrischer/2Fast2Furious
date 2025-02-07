@@ -41,9 +41,14 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 ###################
 ## Train dataset ##
 ###################
-folder_list = [os.path.join(script_path, '..', 'data', '2fast2furious'),
-               os.path.join(script_path, '..', 'data', 'train_starter'),
-               os.path.join(script_path, '..', 'data', 'skipper')]
+folder_list = [
+    # os.path.join(script_path, '..', 'data', 'train_starter'),
+    os.path.join(script_path, '..', 'data', 'train_CW'),
+]
+# folder_list = [os.path.join(script_path, '..', 'data', 'train_tight_turns_CW'),
+#                os.path.join(script_path, '..', 'data', 'train_tight_turns_CCW')]
+            #    os.path.join(script_path, '..', 'data', 'train_starter'),
+            #    os.path.join(script_path, '..', 'data', 'skipper')]
                #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021550_left'),
                #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021555_left'),
                #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021558_right')]
@@ -146,7 +151,8 @@ for epoch in range(10):  # loop over the dataset multiple times
         # print(f'{loss1=}')
         # print(f'{loss2=}')
         # print()
-        loss = loss1 + 0.2 * loss2
+        # loss = loss1 + 0.2 * loss2
+        loss = loss1
         loss.backward()
         optimizer.step()
 
@@ -177,7 +183,8 @@ for epoch in range(10):  # loop over the dataset multiple times
             # print(f'{loss1=}')
             # print(f'{loss2=}')
             # print()
-            loss = loss1 + 1.5 * loss2
+            loss = loss1
+            # loss = loss1 + 1.5 * loss2
 
             val_loss += loss.item()
             # collect the correct predictions for each class
