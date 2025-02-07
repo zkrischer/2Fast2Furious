@@ -63,10 +63,8 @@ try:
 
         with torch.inference_mode():
             prediction = net(trans_image)
-            print(prediction)
         #TO DO: convert prediction into a meaningful steering angle
         angle = pred2steer(prediction)
-        print(angle)
 
         #TO DO: check for stop signs?
         stop_found = findStopSign(im)
@@ -75,7 +73,7 @@ try:
             bot.setVelocity(0,0)
             stopped = True
             # Need to add the capability to wait
-            time.sleep(3)
+            time.sleep(1)
         elif not stop_found:
             pass
         else:
@@ -85,8 +83,8 @@ try:
                 stopped = False
         
 
-        Kd = 20 #base wheel speeds, increase to go faster, decrease to go slower
-        Ka = 20 #how fast to turn when given an angle
+        Kd = 25 #base wheel speeds, increase to go faster, decrease to go slower
+        Ka = 23 #how fast to turn when given an angle
         left  = int(Kd + Ka*angle)
         right = int(Kd - Ka*angle)
             

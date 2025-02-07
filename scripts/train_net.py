@@ -46,7 +46,11 @@ folder_list = [
     os.path.join(script_path, '..', 'data', 'train_CW'),
     os.path.join(script_path, '..', 'data', 'train_CCW'),
     os.path.join(script_path, '..', 'data', 'train2_CW'),
-    os.path.join(script_path, '..', 'data', 'train2_CCW')
+    os.path.join(script_path, '..', 'data', 'train2_CCW'),
+    os.path.join(script_path, '..', 'data', 'train3_CW'),
+    os.path.join(script_path, '..', 'data', 'train3_CCW'),
+    os.path.join(script_path, '..', 'data', 'train4_CW'),
+    os.path.join(script_path, '..', 'data', 'train4_CCW')
 ]
 # folder_list = [os.path.join(script_path, '..', 'data', 'train_tight_turns_CW'),
 #                os.path.join(script_path, '..', 'data', 'train_tight_turns_CCW')]
@@ -91,6 +95,8 @@ criterion1 = nn.CrossEntropyLoss(weight=1/torch.tensor(all_counts))
 val_folder_list = [
     os.path.join(script_path, '..', 'data', 'val_CW'),
     os.path.join(script_path, '..', 'data', 'val_CCW'),
+    os.path.join(script_path, '..', 'data', 'val3_CW'),
+    os.path.join(script_path, '..', 'data', 'val3_CCW')
 ]
 # val_folder_list = [#os.path.join(script_path, '..', 'data', 'slamtroopers' ,'0502160_right'),
                    #os.path.join(script_path, '..', 'data', 'slamtroopers' ,'05021604_left'),

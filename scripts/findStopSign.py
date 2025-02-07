@@ -3,7 +3,7 @@ import numpy as np
 
 def countObjects(contours, image, draw=False):
     largest_box = None
-    largest_area = 65  # Minimum area threshold
+    largest_area = 55  # Minimum area threshold
 
     # Iterate through contours to find the one with the largest area
     for contour in contours:

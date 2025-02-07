@@ -14,7 +14,7 @@ from pibot_client import PiBot
 parser = argparse.ArgumentParser(description='PiBot client')
 parser.add_argument('--ip', type=str, default='192.168.1.252', help='IP address of PiBot')
 parser.add_argument('--im_num', type = int, default = 0)
-parser.add_argument('--folder', type = str, default = 'train2_CCW')
+parser.add_argument('--folder', type = str, default = 'kat_driving')
 args = parser.parse_args()
 
 if not os.path.exists(script_path+"/../data/"+args.folder):
@@ -83,8 +83,8 @@ try:
     while continue_running:
         
         angle = np.clip(angle, -0.5, 0.5)
-        Kd = 20  # Base wheel speeds
-        Ka = 20  # Turn speed
+        Kd = 25  # Base wheel speeds
+        Ka = 25  # Turn speed
         left  = int(Kd + Ka*angle)
         right = int(Kd - Ka*angle)
         

@@ -63,7 +63,6 @@ try:
             prediction = net(im)
         #TO DO: convert prediction into a meaningful steering angle
         angle = pred2steer(prediction)
-        print(f'{angle = }')
 
         #TO DO: check for stop signs?
         
